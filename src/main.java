@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class main {
 
-    private static final File directory = new File(".\\Resources\\TextConverted");
+    private static final File directory = new File(".\\Resources\\Curated");
 
     public static void main(String[] args) {
         try {

@@ -23,9 +23,17 @@ public class WikipediaCurator {
 	
 	File[] filesInDirectory;
 	List<File> newFiles;
-	
-	public WikipediaCurator(String titleTag) throws IOException {
-		String path = "C:/EclipseWorkspaces/csse413/Project5/Resources/TextConverted";
+
+	public static void main(String[] args) {
+		try {
+			new WikipediaCurator();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public WikipediaCurator() throws IOException {
+		String path = ".\\Resources\\TextConverted";
 		File directory = new File(path);
         filesInDirectory = directory.listFiles();
         
@@ -33,13 +41,14 @@ public class WikipediaCurator {
     	for (File file : filesInDirectory) {
     		BufferedReader br = new BufferedReader(new FileReader(file));
     		
-    		File outfile = new File(path + "/" + titleTag + file.getName());
+    		File outfile = new File(".\\Resources\\Curated\\" + file.getName());
     		FileWriter fw = new FileWriter(outfile);
     		BufferedWriter bw = new BufferedWriter(fw);
           
     		String line = br.readLine();
     		System.out.println(line);
-    		
+
+			line = processFirstLine(line);
     		int count = 0;
     		while (line != null) {
     			count++;
