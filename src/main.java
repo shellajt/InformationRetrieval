@@ -1,34 +1,45 @@
 import serach.ArticleTitleSearch;
-import serach.bm25;
+import serach.BM25;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class main {
 
-    public static void main(String[] args) {
-        File directory = new File(".\\Resources\\TextConverted");
+    private static final File directory = new File(".\\Resources\\TextConverted");
 
-        while (true) {
+    public static void main(String[] args) {
+        try {
             System.out.println("Please enter a search query. Type exit to quit.");
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            try {
-                String searchQuery = br.readLine();
-                searchQuery = searchQuery.toLowerCase();
-                if (searchQuery.equals("exit")) exit();
+            String searchQuery = br.readLine();
+            System.out.println(searchQuery);
+            searchQuery = removePunctuation(searchQuery.toLowerCase());
+            System.out.println(searchQuery);
+
+
+            // REPL
+            while (!searchQuery.equals("exit")) {
                 irSearch(directory, searchQuery);
-            } catch (IOException e) {
-                e.printStackTrace();
+
+                System.out.println("Please enter a search query. Type exit to quit.");
+                searchQuery = br.readLine();
+                searchQuery = removePunctuation(searchQuery.toLowerCase());
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private static void exit() {
-        System.out.println("Exiting.");
-        System.exit(0);
+    private static String removePunctuation(String line) {
+        return line.replaceAll("\\.", "").replaceAll(",", "").replaceAll("\\?", "").replaceAll("\"", "").replaceAll(";", "")
+                .replaceAll(":", "").replaceAll("!", "");
     }
 
     private static void irSearch(File directory, String searchQuery) {
@@ -37,11 +48,11 @@ public class main {
         Map<String, Double> headerScores = headerSearch.score();
 
         //BM25 index search
-        bm25 bm = new bm25(searchQuery, directory);
+        BM25 bm = new BM25(searchQuery, directory);
         Map<String, Double> bm25Scores = new HashMap();
         try {
             bm25Scores = bm.score();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -80,7 +91,6 @@ public class main {
             sb.append(String.format("%.3f", maxScore));
             sb.append("\r\n\t");
         }
-        System.out.println(usedFiles.toString());
         return sb.toString();
     }
 }

@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by Jesse Shellabarger on 4/30/2017.
  */
-public class bm25 {
+public class BM25 {
 
     String searchQuery;
     List<String> queryWords;
@@ -26,7 +26,7 @@ public class bm25 {
     private double averageLength;
     int numDocs;
 
-    public bm25(String searchQuery, File directory) {
+    public BM25(String searchQuery, File directory) {
         this.searchQuery = searchQuery;
         queryWords = Arrays.asList(searchQuery.split(" "));
         this.numDocsContainingWord = new HashMap<>();
