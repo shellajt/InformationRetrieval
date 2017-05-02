@@ -26,7 +26,7 @@ public class bm25 {
     private double averageLength;
     int numDocs;
 
-    public bm25(String searchQuery) {
+    public bm25(String searchQuery, File directory) {
         this.searchQuery = searchQuery;
         queryWords = Arrays.asList(searchQuery.split(" "));
         this.numDocsContainingWord = new HashMap<>();
@@ -36,8 +36,6 @@ public class bm25 {
 
         this.amountQueryWordsInDoc = new HashMap<>();
 
-        //TODO: Fix this
-        File directory = new File("C:/Users/Jesse Shellabarger/Documents/Github/InformationRetrieval/Resources/TextConverted");
         filesInDirectory = directory.listFiles();
         for (File file : filesInDirectory) {
             Map<String, Integer> innerMap = new HashMap<>();
@@ -48,7 +46,7 @@ public class bm25 {
         }
     }
 
-    public String score() throws IOException {
+    public Map<String, Double> score() throws IOException {
 
         this.numDocs = filesInDirectory.length;
         for (File file : filesInDirectory) {
@@ -92,24 +90,12 @@ public class bm25 {
 
                 double secondPart = (numTimesInDoc * (k + 1)) / (numTimesInDoc + k * (1 - b + b * lengthOfDoc/averageLength));
 
-                System.out.println(String.format("FileName: %s\tSecondpart: %f\tFrequency: %s\tDoc Length: %d", file.getName(), secondPart, numTimesInDoc, lengthOfDoc));
-
                 score += Math.abs(idf) * secondPart;
             }
             this.scores.put(file.getName(), score);
         }
 
-        Double max = -99999999.0;
-        String maxFileName = "Query words not found in any documents / Something Exploded";
-        for (String fileName: scores.keySet()) {
-            Double score = scores.get(fileName);
-            if (score > max) {
-                max = score;
-                maxFileName = fileName;
-            }
-        }
-
-        return maxFileName.split(" ")[0];
+        return scores;
     }
 
     private String removePunctuation(String line) {

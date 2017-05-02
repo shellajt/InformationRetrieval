@@ -18,4 +18,7 @@ For this, the information retrieval portion of the assignment, implement the fol
 8. Implement skip-bigrams on words.
 9. Implement the ability to enter a simple query. There is no need to develop a GUI.
 10. As a response to a query, return relevant document names.
-11. Challenge problem, can you give an indication of how relevant a document is to a given query, expressed in the likelhood or confidence in the relevance? Ensure that among others, you test your system with queries for which the confidence factor should be very low, such as "best front-loading washing machine" or "0-60 times of Tesla S".
+11. Challenge problem, can you give an indication of how relevant a document is to a given query, expressed in the likelihood or confidence in the relevance? Ensure that among others, you test your system with queries for which the confidence factor should be very low, such as "best front-loading washing machine" or "0-60 times of Tesla S".
+
+## Results
+We currently retrieve information in two steps. First, we search the titles of the articles for the relevant key words. After that, we use the BM25 ranking function to rank the documents in terms of their relevance to the search terms. We combine the results of these two methods to create our final score. The results of the title search are given much more weight than those of the BM25 search. This is for two reasons. First, any search terms found in the title would strongly indicate that the document is a good match. Secondly, BM25 accounts not only for the frequency of the keywords, but also the length of the documents. Shorter documents with fewer occurances of the keywords can be given a higher score because they are shorter and the density of the keywords is higher.
