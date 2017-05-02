@@ -1,6 +1,9 @@
 # InformationRetrieval
 Authors: Jesse Shellabarger and John Kirschenheiter
 
+## How to use
+Run the code as a command-line application. The application is hard-coded to use its internal document directory, so you don't have to worry about that. The user will be repeatedly prompted for search terms in the terminal. Any number of terms can be used to search. Press enter to execute the search. Enter `exit` to close the application.
+
 ## Overview
 
 The purpose of this assignment is to explore basic information retrieval techniques. It is the first of a two part assignment. The second part will focus on NLP techniques.
