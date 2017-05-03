@@ -1,5 +1,6 @@
 import serach.ArticleTitleSearch;
 import serach.BM25;
+import serach.SkipBigramSearch;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,9 +20,7 @@ public class main {
             System.out.println("Please enter a search query. Type exit to quit.");
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             String searchQuery = br.readLine();
-            System.out.println(searchQuery);
             searchQuery = removePunctuation(searchQuery.toLowerCase());
-            System.out.println(searchQuery);
 
 
             // REPL
@@ -54,12 +53,23 @@ public class main {
             bm25Scores = bm.score();
         } catch (IOException e) {
             e.printStackTrace();
+            return;
+        }
+
+        // Skip Bigram Search
+        SkipBigramSearch bigram = new SkipBigramSearch(searchQuery, directory);
+        Map<String, Double> bigramScores = new HashMap();
+        try {
+            bigramScores = bigram.score();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
         }
 
         //Consolidate scores from our different methods
         Map<String, Double> finalScores = new HashMap();
         for (String filename : headerScores.keySet()) {
-            Double score = headerScores.get(filename) * 2 + bm25Scores.get(filename);
+            Double score = headerScores.get(filename) * 3 + bm25Scores.get(filename) + 1.5 * bigramScores.get(filename);
             finalScores.put(filename, score);
         }
 
