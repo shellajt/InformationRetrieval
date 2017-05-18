@@ -33,7 +33,7 @@ public class WikipediaCurator {
 	}
 
 	public WikipediaCurator() throws IOException {
-		String path = ".\\Resources\\TextConverted";
+		String path = ".\\Resources\\NlpDocs";
 		File directory = new File(path);
         filesInDirectory = directory.listFiles();
         
@@ -41,21 +41,21 @@ public class WikipediaCurator {
     	for (File file : filesInDirectory) {
     		BufferedReader br = new BufferedReader(new FileReader(file));
     		
-    		File outfile = new File(".\\Resources\\Curated\\" + file.getName());
+    		File outfile = new File(".\\Resources\\NlpDocs\\" + file.getName()+"(1)");
     		FileWriter fw = new FileWriter(outfile);
     		BufferedWriter bw = new BufferedWriter(fw);
           
     		String line = br.readLine();
     		System.out.println(line);
 
-			line = processFirstLine(line);
+			//line = processFirstLine(line);
     		int count = 0;
     		while (line != null) {
     			count++;
     			line = removePunctuation(line);
-    			line = line.toLowerCase();
-    			line = removeWeirdLine(line);
-    			line = handleReferences(line, count);
+    			//line = line.toLowerCase();
+    			//line = removeWeirdLine(line);
+    			//line = handleReferences(line, count);
     			
     			bw.write(line);
     			bw.newLine();
@@ -88,7 +88,7 @@ public class WikipediaCurator {
 	}
 
 	private String removePunctuation(String line) {
-        return line.replaceAll("\\.", "").replaceAll(",", "").replaceAll("\\?", "").replaceAll("\"", "").replaceAll(";", "")
-                .replaceAll(":", "").replaceAll("!", "");
+        return line.replaceAll(",", "").replaceAll("\"", "").replaceAll(";", "")
+                .replaceAll(":", "").replaceAll("-", " ").replaceAll("\\(", " ").replaceAll("\\)", " ");
     }
 }
